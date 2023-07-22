@@ -1,0 +1,9 @@
+{application,staas,
+             [{optional_applications,[]},
+              {applications,[kernel,stdlib,elixir,logger,bandit]},
+              {description,"staas"},
+              {modules,['Elixir.Staas','Elixir.Staas.Application',
+                        'Elixir.Staas.Router','Elixir.Staas.Sort']},
+              {registered,[]},
+              {vsn,"0.1.0"},
+              {mod,{'Elixir.Staas.Application',[]}}]}.
