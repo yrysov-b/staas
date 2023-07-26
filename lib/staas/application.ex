@@ -8,13 +8,12 @@ defmodule Staas.Application do
   @impl true
   def start(_type, _args) do
     children = [
-
-      {Bandit, plug: Staas.Router, scheme: :http, port: 4000}
+      {Bandit, plug: Staas.Router, scheme: :http, port: 4000},
+      {Redix, name: :redix}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-
     opts = [strategy: :one_for_one, name: Staas.Supervisor]
     Supervisor.start_link(children, opts)
   end

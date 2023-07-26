@@ -5,7 +5,7 @@ defmodule Staas.MixProject do
     [
       app: :staas,
       version: "0.1.0",
-      elixir: "~> 1.15",
+      elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -22,6 +22,7 @@ defmodule Staas.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:redix, "~> 1.1"},
       {:bandit, "~> 0.6"}
     ]
   end
