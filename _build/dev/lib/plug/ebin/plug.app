@@ -1,6 +1,5 @@
 {application,plug,
              [{compile_env,[{plug,[mimes],error},{plug,[statuses],error}]},
-              {optional_applications,[]},
               {applications,[kernel,stdlib,elixir,logger,eex,mime,plug_crypto,
                              telemetry]},
               {description,"Compose web applications with functions"},

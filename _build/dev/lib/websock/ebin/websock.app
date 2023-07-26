@@ -1,6 +1,5 @@
 {application,websock,
-             [{optional_applications,[]},
-              {applications,[kernel,stdlib,elixir]},
+             [{applications,[kernel,stdlib,elixir]},
               {description,"A specification for WebSocket connections"},
               {modules,['Elixir.WebSock']},
               {registered,[]},

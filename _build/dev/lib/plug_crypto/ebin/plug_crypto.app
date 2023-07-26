@@ -1,6 +1,5 @@
 {application,plug_crypto,
-             [{optional_applications,[]},
-              {applications,[kernel,stdlib,elixir,crypto]},
+             [{applications,[kernel,stdlib,elixir,crypto]},
               {description,"Crypto-related functionality for the web"},
               {modules,['Elixir.Plug.Crypto','Elixir.Plug.Crypto.Application',
                         'Elixir.Plug.Crypto.KeyGenerator',
