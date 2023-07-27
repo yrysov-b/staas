@@ -22,8 +22,10 @@ defmodule Staas.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:bandit, "~> 0.6"},
+      {:jason, "~> 1.4"},
       {:redix, "~> 1.1"},
-      {:bandit, "~> 0.6"}
+      {:castore, ">= 0.0.0"}
     ]
   end
 end
