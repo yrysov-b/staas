@@ -1,43 +1,59 @@
 defmodule Staas.Router do
+  alias Staas.SortArray
   use Plug.Router
 
-  plug(Plug.Logger)
-  plug(:match)
-  plug(:dispatch)
+  plug Plug.Logger
+  plug :match
 
-  get "/:list" do
-    res = Redix.command(:redix, ["GET", list])
+  plug Plug.Parsers,
+       parsers: [:json],
+       pass:  ["application/json"],
+       json_decoder: Jason
 
-    case res do
+  plug :dispatch
+
+  get "/" do
+    send_resp(conn, 200, "Welcome to StaS")
+  end
+
+  post "/array" do
+
+    # IO.inspect(conn)
+    # IO.inspect conn.body_params # Prints JSON POST body
+
+    array =  Map.get(conn.body_params, "list")
+    hash_of_array = :crypto.hash(:sha256,array)
+
+    hash_result = Redix.command(:redix, ["GET", hash_of_array])
+
+    IO.inspect(hash_result)
+
+    case hash_result do
       {:ok, nil} ->
-        send_resp(conn, 200, "nil")
+        IO.puts("HERE")
+        new_array = SortArray.process_array(array)
+        conn = assign(conn, :list, new_array)
 
-      {:ok, value} ->
-        send_resp(conn, 200, value)
+        Redix.command!(:redix, ["SET", hash_of_array, new_array])
 
-      _ ->
-        send_resp(conn, 404, "Something wrong with redis server")
+        {:ok, redix_result} = Redix.command(:redix, ["GET", hash_of_array])
+
+        IO.puts("REDIX")
+        IO.inspect(redix_result)
+
+        {:ok, result} = Jason.encode(new_array)
+        send_resp(conn, 200, result)
+      {:ok, array_redis} ->
+        IO.puts("Cached")
+        IO.inspect(array_redis)
+
+        array_list = :binary.bin_to_list (array_redis)
+        {:ok, result} = Jason.encode(array_list)
+         send_resp(conn, 200, result)
+
     end
   end
 
-  post "/:list" do
-    result =
-      list
-      |> Staas.Modifiers.to_list()
-      # TO DO real sort
-      |> Enum.sort()
-      |> Staas.Modifiers.to_string()
-
-    res = Redix.command(:redix, ["SET", list, result])
-
-    case res do
-      {:ok, _} ->
-        send_resp(conn, 201, result)
-
-      _ ->
-        send_resp(conn, 404, "Something wrong with redis server")
-    end
-  end
 
   match _ do
     send_resp(conn, 404, "There is no route")
