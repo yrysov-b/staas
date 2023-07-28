@@ -25,6 +25,8 @@ defmodule Staas.MixProject do
       {:bandit, "~> 0.6"},
       {:jason, "~> 1.4"},
       {:redix, "~> 1.1"},
+      {:uuid, "~> 1.1"},
+      {:httpoison, "~> 2.1"},
       {:castore, ">= 0.0.0"}
     ]
   end
