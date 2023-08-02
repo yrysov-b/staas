@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: Staas
+    command: mix phx.server
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    environment:
+        MIX_ENV: "dev"
+        REDIS_URL: "redis://db:6379"
+
+  db:
+    image: redis:latest
+    container_name: staas_redis
+    ports:
+      - "6379:6379"
