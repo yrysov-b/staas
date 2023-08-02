@@ -1,0 +1,39 @@
+name: Elixir CI
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Elixir
+      uses: actions/setup-elixir@v1
+      with:
+        otp-version: '25.0'
+        elixir-version: '1.14.4'
+
+    - name: Install Dependencies
+      run: mix deps.get
+
+    - name: Run Linters
+      run: mix format --check-formatted && mix credo --strict
+
+    - name: Run Tests
+      run: mix test
+
+    - name: Build Docker Image
+      run: docker build -t my-elixir-app .
