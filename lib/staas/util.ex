@@ -1,5 +1,4 @@
 defmodule Staas.Util do
-
   @moduledoc "
   Checks if list is valid
   "
