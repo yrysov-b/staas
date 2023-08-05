@@ -27,7 +27,7 @@ jobs:
         elixir-version: '1.14.4'
 
     - name: Install Dependencies
-      run: mix deps.get
+      run: mix mix.exs
 
     - name: Run Linters
       run: mix format --check-formatted && mix credo --strict
