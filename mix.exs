@@ -27,7 +27,8 @@ defmodule Staas.MixProject do
       {:redix, "~> 1.1"},
       {:uuid, "~> 1.1"},
       {:httpoison, "~> 2.1"},
-      {:castore, ">= 0.0.0"}
+      {:castore, ">= 0.0.0"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end
 end
