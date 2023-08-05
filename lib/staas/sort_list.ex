@@ -1,5 +1,4 @@
 defmodule Staas.SortList do
-
   @moduledoc "
   Sorts list
   "
