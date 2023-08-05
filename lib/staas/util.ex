@@ -1,4 +1,8 @@
 defmodule Staas.Util do
+
+  @moduledoc "
+  Checks if list is valid
+  "
   def is_valid_list(list) do
     is_list(list) and is_list_of_ints(list)
   end
