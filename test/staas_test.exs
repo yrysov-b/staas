@@ -29,6 +29,27 @@ defmodule StaasTest do
     end
 
     test "send post with existing list: [3,2,1]" do
+      # Making sure that this list does not exist in Redis(a.k.a deleting it)
+      list = [3, 2, 1]
+      {:ok, list_encoded} = Jason.encode(list)
+      uuid = UUID.uuid5(nil, list_encoded)
+      Redix.command(:redix, ["UNLINK", uuid])
+
+      url = @url <> "/array"
+      params = %{list: [3, 2, 1]}
+      jason_params = Jason.encode!(params)
+      headers = [{"Content-type", "application/json"}]
+
+      {:ok, %HTTPoison.Response{status_code: status, body: body}} =
+        HTTPoison.post(url, jason_params, headers, [])
+
+      jason_decoded = Jason.decode!(body)
+
+      assert status == 200, "Post was not successful #{status}"
+
+      assert %{"list" => [1, 2, 3]} = jason_decoded,
+             "Answers are different #{inspect(jason_decoded)}"
+
       params = %{list: [3, 2, 1]}
       jason_params = Jason.encode!(params)
 
