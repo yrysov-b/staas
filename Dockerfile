@@ -1,6 +1,6 @@
-FROM elixir:1.14
+FROM elixir:1.14-alpine
 
-RUN apt-get update && apt-get install -y build-essential
+RUN apt-get update 
 
 WORKDIR /app
 
