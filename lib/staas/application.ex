@@ -7,13 +7,15 @@ defmodule Staas.Application do
 
   @impl true
   def start(_type, _args) do
+    uri = Application.get_env(:staas, :uri)
+    # Read variable Redis.Url
+    # connect to it
+
     children = [
       {Bandit, plug: Staas.Router, scheme: :http, port: 4000},
-      {Redix, name: :redix}
+      {Redix, {uri, name: :redix, sync_connect: true}}
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Staas.Supervisor]
     Supervisor.start_link(children, opts)
   end
