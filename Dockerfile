@@ -1,6 +1,6 @@
 FROM elixir:1.14-alpine
 
-RUN apt-get update 
+RUN apk update 
 
 WORKDIR /app
 
@@ -14,4 +14,4 @@ COPY . .
 
 RUN mix compile
 
-CMD ["mix", "phx.server"]
+CMD ["mix", "compile", "mix", "run"]
