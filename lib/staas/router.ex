@@ -15,7 +15,7 @@ defmodule Staas.Router do
   plug(:dispatch)
 
   get "/" do
-    send_resp(conn, 200, "Welcome to StaS")
+    send_resp(conn, 200, "Welcome to StaaS")
   end
 
   get "/array/:uuid" do
@@ -23,10 +23,13 @@ defmodule Staas.Router do
 
     case result do
       nil ->
-        send_resp(conn, 404, "No such uuid")
+        result = Jason.encode!(%{error: "No such uuid"})
+        send_resp(conn, 404, result)
 
       list ->
-        send_resp(conn, 200, list)
+        list_formated = Jason.decode!(list)
+        result = Jason.encode!(%{list: list_formated, uuid: uuid})
+        send_resp(conn, 200, result)
     end
   end
 
@@ -42,18 +45,23 @@ defmodule Staas.Router do
         nil ->
           new_list = SortList.process_list(list)
           {:ok, list_encoded} = Jason.encode(new_list)
+
           conn = assign(conn, :list, new_list)
           conn = assign(conn, :uuid, uuid)
           Redix.command!(:redix, ["SET", uuid, list_encoded])
-          result = list_encoded <> "\n" <> uuid
+          result = Jason.encode!(%{list: new_list, uuid: uuid})
           send_resp(conn, 200, result)
 
         saved_array ->
-          result = "Array from cache: " <> saved_array <> "\n" <> uuid
+          # Converting from "[1,2,3]" to [1,2,3]
+          array_in_list = Jason.decode!(saved_array)
+
+          result = Jason.encode!(%{list: array_in_list, uuid: uuid, cached: true})
           send_resp(conn, 200, result)
       end
     else
-      send_resp(conn, 400, "Invalid array")
+      result = Jason.encode!(%{error: "Invalid array"})
+      send_resp(conn, 400, result)
     end
   end
 
