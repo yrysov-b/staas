@@ -21,7 +21,7 @@ defmodule StaasTest do
         HTTPoison.post(url, jason_params, headers, [])
 
       jason_decoded = Jason.decode!(body)
-      IO.inspect(jason_decoded)
+
       assert status == 200, "Post was not successful #{status}"
 
       assert %{"list" => [1, 2, 3]} = jason_decoded,
@@ -164,7 +164,7 @@ defmodule StaasTest do
         HTTPoison.post(url, jason_params, headers, [])
 
       jason_decoded = Jason.decode!(body)
-      IO.inspect(jason_decoded)
+
       assert status == 200, "Post was not successful #{status}"
 
       assert %{"list" => [1, 2, 3]} = jason_decoded,
