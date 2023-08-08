@@ -5,7 +5,6 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: Staas
-    command: mix phx.server
     ports:
       - "4000:4000"
     depends_on:
