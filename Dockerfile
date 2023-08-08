@@ -14,4 +14,4 @@ COPY . .
 
 RUN mix compile
 
-CMD ["mix", "compile", "mix", "run"]
+CMD ["mix", "run"]
